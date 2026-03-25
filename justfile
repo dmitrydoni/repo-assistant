@@ -6,6 +6,11 @@ branch := "devel"
 script := "aihero/project/src/ingest_github_repo.py"
 output := "_data/repository_data.json"
 
+input_data := "_data/repository_data.json"
+chunks_sliding := "_data/repository_chunks_sliding.json"
+chunks_sections := "_data/repository_chunks_sections.json"
+chunk_script := "aihero/project/src/chunk_repository_data.py"
+
 ###
 ### Project info
 ###
@@ -70,4 +75,61 @@ save:
 # Preview saved repository data file path.
 where:
 	@echo {{output}}
+
+# Create sliding-window chunks and save them to disk.
+chunk-sliding:
+	uv run --project . python {{chunk_script}} \
+	  --input {{input_data}} \
+	  --output {{chunks_sliding}} \
+	  --strategy sliding \
+	  --mode counts
+
+# Preview a few sliding-window chunks.
+chunk-preview limit="5":
+	uv run --project . python {{chunk_script}} \
+	  --input {{input_data}} \
+	  --strategy sliding \
+	  --mode preview \
+	  --limit {{limit}}
+
+# Show full JSON sliding chunk output.
+chunk-json:
+	uv run --project . python {{chunk_script}} \
+	  --input {{input_data}} \
+	  --strategy sliding \
+	  --mode json
+
+# Show saved sliding chunk output path.
+chunk-where:
+	@echo {{chunks_sliding}}
+
+# Create section-based chunks and save them to disk.
+chunk-sections:
+	uv run --project . python {{chunk_script}} \
+	  --input {{input_data}} \
+	  --output {{chunks_sections}} \
+	  --strategy sections \
+	  --level 2 \
+	  --mode counts
+
+# Preview a few section-based chunks.
+chunk-sections-preview limit="5":
+	uv run --project . python {{chunk_script}} \
+	  --input {{input_data}} \
+	  --strategy sections \
+	  --level 2 \
+	  --mode preview \
+	  --limit {{limit}}
+
+# Show full JSON section chunk output.
+chunk-sections-json:
+	uv run --project . python {{chunk_script}} \
+	  --input {{input_data}} \
+	  --strategy sections \
+	  --level 2 \
+	  --mode json
+
+# Show saved section chunk output path.
+chunk-sections-where:
+	@echo {{chunks_sections}}
 

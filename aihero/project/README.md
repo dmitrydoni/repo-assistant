@@ -19,12 +19,62 @@ GitHub repository document ingestion.
   - counts
   - preview
   - full JSON
+- can save processed repository data to disk
 
 ### Current example
 
 - repo: `dlt-hub/dlt`
 - branch: `devel`
 
-### Next
+### Day 1 outputs
 
-Day 2: chunk large documents into smaller sections for retrieval.
+- raw processed documents: `_data/repository_data.json`
+
+### Day 1 commands
+
+- `j counts`
+- `j preview`
+- `j preview 2`
+- `j save`
+
+## Day 2
+
+Chunk large documents into smaller retrieval-friendly units.
+
+### Implemented chunking strategies
+
+- sliding-window chunking with overlap
+- markdown section chunking by header level
+
+### Features
+
+- loads processed repository data from Day 1
+- creates chunk records while preserving source document metadata
+- supports chunk counts
+- supports chunk preview
+- supports full JSON output
+- saves chunked outputs to disk
+
+### Day 2 outputs
+
+- sliding-window chunks: `_data/repository_chunks_sliding.json`
+- section-based chunks: `_data/repository_chunks_sections.json`
+
+### Day 2 commands
+
+- `j chunk-sliding`
+- `j chunk-preview`
+- `j chunk-preview 2`
+- `j chunk-sections`
+- `j chunk-sections-preview`
+- `j chunk-sections-preview 2`
+
+## Current status
+
+- Day 1 complete
+- Day 2 complete
+
+## Next
+
+Day 3: index the prepared chunks in a search engine.
+
