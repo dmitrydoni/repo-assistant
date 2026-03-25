@@ -1,0 +1,16 @@
+[project]
+name = "repo-assistant"
+version = "0.1.0"
+description = "7-Day AI Agents Email Crash-Course"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "python-frontmatter>=1.1.0",
+    "requests>=2.32.5",
+]
+
+[dependency-groups]
+dev = [
+    "jupyter>=1.1.1",
+]
+
