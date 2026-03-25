@@ -11,6 +11,11 @@ chunks_sliding := "_data/repository_chunks_sliding.json"
 chunks_sections := "_data/repository_chunks_sections.json"
 chunk_script := "aihero/project/src/chunk_repository_data.py"
 
+search_input := "_data/repository_chunks_sliding.json"
+search_script := "aihero/project/src/search_repository_data.py"
+search_query := "How do I install dlt?"
+search_model := "multi-qa-distilbert-cos-v1"
+
 ###
 ### Project info
 ###
@@ -132,4 +137,88 @@ chunk-sections-json:
 # Show saved section chunk output path.
 chunk-sections-where:
 	@echo {{chunks_sections}}
+
+# Run a default lexical search query against sliding-window chunks.
+search-text:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{search_query}}" \
+	  --limit 5 \
+	  --mode preview
+
+# Run a custom lexical search query against sliding-window chunks.
+search-text-q query:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{query}}" \
+	  --limit 5 \
+	  --mode preview
+
+# Show full JSON results for the default lexical search query.
+search-text-json:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{search_query}}" \
+	  --limit 5 \
+	  --mode json
+
+# Run a default vector search query against sliding-window chunks.
+search-vector:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{search_query}}" \
+	  --strategy vector \
+	  --model {{search_model}} \
+	  --limit 5 \
+	  --mode preview
+
+# Run a custom vector search query against sliding-window chunks.
+search-vector-q query:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{query}}" \
+	  --strategy vector \
+	  --model {{search_model}} \
+	  --limit 5 \
+	  --mode preview
+
+# Show full JSON results for the default vector search query.
+search-vector-json:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{search_query}}" \
+	  --strategy vector \
+	  --model {{search_model}} \
+	  --limit 5 \
+	  --mode json
+
+# Run a default hybrid search query against sliding-window chunks.
+search-hybrid:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{search_query}}" \
+	  --strategy hybrid \
+	  --model {{search_model}} \
+	  --limit 5 \
+	  --mode preview
+
+# Run a custom hybrid search query against sliding-window chunks.
+search-hybrid-q query:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{query}}" \
+	  --strategy hybrid \
+	  --model {{search_model}} \
+	  --limit 5 \
+	  --mode preview
+
+# Show full JSON results for the default hybrid search query.
+search-hybrid-json:
+	uv run --project . python {{search_script}} \
+	  --input {{search_input}} \
+	  --query "{{search_query}}" \
+	  --strategy hybrid \
+	  --model {{search_model}} \
+	  --limit 5 \
+	  --mode json
 

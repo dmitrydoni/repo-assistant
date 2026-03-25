@@ -69,12 +69,44 @@ Chunk large documents into smaller retrieval-friendly units.
 - `j chunk-sections-preview`
 - `j chunk-sections-preview 2`
 
+## Day 3
+
+Add search over the prepared repository chunks.
+
+### Implemented search strategies
+
+- lexical text search
+- vector search with embeddings
+- hybrid search combining text and vector results
+
+### Features
+
+- loads chunked repository data from Day 2
+- supports exact-match and keyword-oriented retrieval
+- supports semantic retrieval with embeddings
+- supports hybrid retrieval with deduplication
+- provides preview and full JSON output modes
+
+### Day 3 input
+
+- sliding-window chunks: `_data/repository_chunks_sliding.json`
+
+### Day 3 commands
+
+- `j search-text`
+- `j search-text-q "your query"`
+- `j search-vector`
+- `j search-vector-q "your query"`
+- `j search-hybrid`
+- `j search-hybrid-q "your query"`
+
 ## Current status
 
 - Day 1 complete
 - Day 2 complete
+- Day 3 complete
 
 ## Next
 
-Day 3: index the prepared chunks in a search engine.
+Day 4: build a conversational agent on top of search.
 
