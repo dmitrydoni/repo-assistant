@@ -1,8 +1,9 @@
 set shell := ["bash", "-cu"]
 
-repo_owner := "dlt-hub"
-repo_name := "dlt"
-branch := "devel"
+repo_owner := "AltimateAI"
+repo_name := "altimate-code"
+branch := "main"
+
 script := "aihero/project/src/ingest_github_repo.py"
 output := "_data/repository_data.json"
 
@@ -13,8 +14,12 @@ chunk_script := "aihero/project/src/chunk_repository_data.py"
 
 search_input := "_data/repository_chunks_sliding.json"
 search_script := "aihero/project/src/search_repository_data.py"
-search_query := "How do I install dlt?"
+search_query := "How do I install Altimate?"
 search_model := "multi-qa-distilbert-cos-v1"
+
+agent_input := "_data/repository_chunks_sliding.json"
+agent_script := "aihero/project/src/agent_repository_qa.py"
+agent_question := "How do I install Altimate Code?"
 
 ###
 ### Project info
@@ -221,4 +226,16 @@ search-hybrid-json:
 	  --model {{search_model}} \
 	  --limit 5 \
 	  --mode json
+
+# Ask the repository agent a default question.
+agent-q:
+	uv run --project . python {{agent_script}} \
+	  --input {{agent_input}} \
+	  --question "{{agent_question}}"
+
+# Ask the repository agent a custom question.
+agent-q-custom question:
+	uv run --project . python {{agent_script}} \
+	  --input {{agent_input}} \
+	  --question "{{question}}"
 

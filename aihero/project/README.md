@@ -100,13 +100,34 @@ Add search over the prepared repository chunks.
 - `j search-hybrid`
 - `j search-hybrid-q "your query"`
 
+## Day 4
+
+Build a repository Q&A agent on top of search.
+
+### Features
+
+- uses Pydantic AI for agent orchestration
+- exposes repository search as a tool: `search_repo`
+- answers questions based on repository search results
+- uses the prepared sliding-window chunks as agent input
+
+### Day 4 input
+
+- `_data/repository_chunks_sliding.json`
+
+### Day 4 commands
+
+- `j agent-q`
+- `j agent-q-custom "your question"`
+
 ## Current status
 
 - Day 1 complete
 - Day 2 complete
 - Day 3 complete
+- Day 4 complete
 
 ## Next
 
-Day 4: build a conversational agent on top of search.
+Day 5: evaluate the agent and compare search/prompt choices.
 
