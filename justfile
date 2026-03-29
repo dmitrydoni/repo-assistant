@@ -56,7 +56,7 @@ tree:
 	@echo "------------------------------------------"
 	@echo "Repo structure"
 	@echo "------------------------------------------"
-	@tree -a -I '.git|.venv|__pycache__|*.pyc|_data|.dlt/secrets.toml|.ruff_cache|__marimo__' -L 4
+	@tree -a -I '.git|.venv|__pycache__|*.pyc' -L 4
 
 ###
 ### Operations

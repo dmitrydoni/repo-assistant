@@ -2,6 +2,15 @@
 
 Implementation track for the AI Hero crash course.
 
+This document is the detailed project spec behind the root portfolio README.
+
+## Target repository
+
+Current implementation is configured for:
+
+- `AltimateAI/altimate-code`
+- branch: `main`
+
 ## Day 1
 
 GitHub repository document ingestion.
@@ -21,16 +30,11 @@ GitHub repository document ingestion.
   - full JSON
 - can save processed repository data to disk
 
-### Current example
-
-- repo: `dlt-hub/dlt`
-- branch: `devel`
-
-### Day 1 outputs
+### Outputs
 
 - raw processed documents: `_data/repository_data.json`
 
-### Day 1 commands
+### Commands
 
 - `j counts`
 - `j preview`
@@ -55,12 +59,12 @@ Chunk large documents into smaller retrieval-friendly units.
 - supports full JSON output
 - saves chunked outputs to disk
 
-### Day 2 outputs
+### Outputs
 
 - sliding-window chunks: `_data/repository_chunks_sliding.json`
 - section-based chunks: `_data/repository_chunks_sections.json`
 
-### Day 2 commands
+### Commands
 
 - `j chunk-sliding`
 - `j chunk-preview`
@@ -87,11 +91,11 @@ Add search over the prepared repository chunks.
 - supports hybrid retrieval with deduplication
 - provides preview and full JSON output modes
 
-### Day 3 input
+### Input
 
 - sliding-window chunks: `_data/repository_chunks_sliding.json`
 
-### Day 3 commands
+### Commands
 
 - `j search-text`
 - `j search-text-q "your query"`
@@ -111,11 +115,11 @@ Build a repository Q&A agent on top of search.
 - answers questions based on repository search results
 - uses the prepared sliding-window chunks as agent input
 
-### Day 4 input
+### Input
 
 - `_data/repository_chunks_sliding.json`
 
-### Day 4 commands
+### Commands
 
 - `j agent-q`
 - `j agent-q-custom "your question"`
@@ -133,7 +137,7 @@ Evaluate the repository agent systematically.
 - runs generated questions through the agent automatically
 - saves detailed evaluation results for later comparison
 
-### Day 5 artefacts
+### Artefacts
 
 - interaction logs: `logs/*.json`
 - question generation: `aihero/project/src/generate_eval_questions.py`
@@ -142,7 +146,15 @@ Evaluate the repository agent systematically.
 - generated run results: `_data/eval_runs.json`
 - saved evaluation baseline: `_data/eval_results_ai_generated.json`
 
-### Day 5 commands
+### Baseline results
+
+- `answer_clear`: `10/10`
+- `answer_grounded`: `10/10`
+- `answer_relevant`: `10/10`
+- `instructions_follow`: `10/10`
+- `tool_call_search`: `10/10`
+
+### Commands
 
 - `j eval-log`
 - `j eval-log-file logs/<file>.json`
@@ -163,25 +175,30 @@ Build a local UI for the repository agent.
 - logs UI interactions the same way as CLI interactions
 - supports local testing before deployment
 
-### Day 6 artefacts
+### Artefacts
 
 - Streamlit app: `aihero/project/src/app_streamlit.py`
 - reusable logging module: `aihero/project/src/logs.py`
 
-### Day 6 command
+### Command
 
 - `j app`
 
-## Current status
+## Day 7
 
-- Day 1 complete
-- Day 2 complete
-- Day 3 complete
-- Day 4 complete
-- Day 5 complete
-- Day 6 complete
+Polish the project as a portfolio-ready repository.
 
-## Next
+### Features
 
-Day 7: wrap up the project and prepare the final presentation/demo.
+- root README focused on project value and outcomes
+- detailed project spec
+- evaluation results made explicit
+- Streamlit screenshot/demo support in the root README
+- project organized for sharing and reuse
+
+
+### Artefacts
+
+- Documentation
+- Local application ready for use - I'm already using it myself :)
 
