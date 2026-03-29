@@ -7,6 +7,11 @@ from typing import Any
 from minsearch import Index
 from pydantic_ai import Agent
 
+from datetime import datetime
+import secrets
+
+from pydantic_ai.messages import ModelMessagesTypeAdapter
+
 
 def load_json(input_path: str) -> list[dict[str, Any]]:
     """Load chunked repository data from a JSON file."""
@@ -40,6 +45,52 @@ If the search results are not sufficient, say that clearly and give the best par
 Be concise, practical, and specific.
 """.strip()
 
+LOG_DIR = Path("logs")
+LOG_DIR.mkdir(exist_ok=True)
+
+
+def serializer(obj: Any) -> str:
+    """Serialize datetime values for JSON output."""
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    raise TypeError(f"Type {type(obj)} not serializable")
+
+
+def log_entry(agent: Agent, messages: list[Any], source: str = "user") -> dict[str, Any]:
+    """Build a structured log entry for one agent interaction."""
+    dict_messages = ModelMessagesTypeAdapter.dump_python(messages)
+
+    return {
+        "agent_name": agent.name,
+        "system_prompt": SYSTEM_PROMPT,
+        "tools": ["search_repo"],
+        "messages": dict_messages,
+        "source": source,
+    }
+
+
+def log_interaction_to_file(agent: Agent, messages: list[Any], source: str = "user") -> Path:
+    """Save one agent interaction to a JSON log file."""
+    entry = log_entry(agent, messages, source=source)
+
+    ts = entry["messages"][-1]["timestamp"]
+
+    if isinstance(ts, datetime):
+        ts_obj = ts
+    else:
+        ts_obj = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+
+    ts_str = ts_obj.strftime("%Y%m%d_%H%M%S")
+    rand_hex = secrets.token_hex(3)
+
+    filename = f"{agent.name}_{ts_str}_{rand_hex}.json"
+    filepath = LOG_DIR / filename
+
+    with filepath.open("w", encoding="utf-8") as f_out:
+        json.dump(entry, f_out, indent=2, default=serializer)
+
+    return filepath
+
 
 def build_agent(index: Index) -> Agent:
     """Create the repository QA agent with a search tool."""
@@ -63,14 +114,16 @@ def build_agent(index: Index) -> Agent:
     return agent
 
 
-async def run_agent(input_path: str, question: str) -> str:
-    """Run the repository QA agent for a single user question."""
+async def run_agent(input_path: str, question: str, source: str = "user") -> tuple[str, Path]:
+    """Run the repository QA agent for a single user question and save a log."""
     records = load_json(input_path)
     index = build_text_index(records)
     agent = build_agent(index)
 
     result = await agent.run(user_prompt=question)
-    return result.output
+    log_file = log_interaction_to_file(agent, result.new_messages(), source=source)
+
+    return result.output, log_file
 
 
 def main() -> None:
@@ -79,8 +132,9 @@ def main() -> None:
     parser.add_argument("--question", required=True, help="User question")
     args = parser.parse_args()
 
-    answer = asyncio.run(run_agent(input_path=args.input, question=args.question))
+    answer, log_file = asyncio.run(run_agent(input_path=args.input, question=args.question))
     print(answer)
+    print(f"\nLog saved to: {log_file}")
 
 
 if __name__ == "__main__":

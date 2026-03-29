@@ -21,6 +21,22 @@ agent_input := "_data/repository_chunks_sliding.json"
 agent_script := "aihero/project/src/agent_repository_qa.py"
 agent_question := "How do I install Altimate Code?"
 
+eval_script := "aihero/project/src/evaluate_agent_logs.py"
+eval_model := "openai:gpt-5.4-mini"
+eval_log_file := "logs/agent_20260329_173105_0cb000.json"
+eval_log_dir := "logs"
+
+eval_questions_script := "aihero/project/src/generate_eval_questions.py"
+eval_questions_output := "_data/eval_questions.json"
+eval_questions_input := "_data/repository_chunks_sliding.json"
+eval_questions_model := "openai:gpt-5.4-mini"
+eval_questions_sample_size := "10"
+eval_questions_seed := "47"
+
+eval_runs_script := "aihero/project/src/run_eval_questions.py"
+eval_runs_output := "_data/eval_runs.json"
+eval_results_output := "_data/eval_results_ai_generated.json"
+
 ###
 ### Project info
 ###
@@ -238,4 +254,53 @@ agent-q-custom question:
 	uv run --project . python {{agent_script}} \
 	  --input {{agent_input}} \
 	  --question "{{question}}"
+
+# Evaluate the default saved agent interaction log.
+eval-log:
+	uv run --project . python {{eval_script}} \
+	  --log-file {{eval_log_file}} \
+	  --model {{eval_model}}
+
+# Evaluate a specific saved agent interaction log.
+eval-log-file log_file:
+	uv run --project . python {{eval_script}} \
+	  --log-file {{log_file}} \
+	  --model {{eval_model}}
+
+# Evaluate all saved agent interaction logs in the logs directory.
+eval-logs:
+	uv run --project . python {{eval_script}} \
+	  --log-dir {{eval_log_dir}} \
+	  --model {{eval_model}}
+
+# Generate evaluation questions from sampled repository chunks.
+eval-generate-questions:
+	uv run --project . python {{eval_questions_script}} \
+	  --input {{eval_questions_input}} \
+	  --output {{eval_questions_output}} \
+	  --model {{eval_questions_model}} \
+	  --sample-size {{eval_questions_sample_size}} \
+	  --seed {{eval_questions_seed}}
+
+# Run generated evaluation questions through the agent and save run results.
+eval-run-questions:
+	uv run --project . python {{eval_runs_script}} \
+	  --agent-input {{agent_input}} \
+	  --questions-file {{eval_questions_output}} \
+	  --output {{eval_runs_output}}
+
+# Evaluate only AI-generated agent interaction logs.
+eval-logs-ai:
+	uv run --project . python {{eval_script}} \
+	  --log-dir {{eval_log_dir}} \
+	  --source ai-generated \
+	  --model {{eval_model}}
+
+# Evaluate only AI-generated logs and save detailed results.
+eval-logs-ai-save:
+	uv run --project . python {{eval_script}} \
+	  --log-dir {{eval_log_dir}} \
+	  --source ai-generated \
+	  --model {{eval_model}} \
+	  --output {{eval_results_output}}
 

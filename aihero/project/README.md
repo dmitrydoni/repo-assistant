@@ -120,14 +120,47 @@ Build a repository Q&A agent on top of search.
 - `j agent-q`
 - `j agent-q-custom "your question"`
 
+## Day 5
+
+Evaluate the repository agent systematically.
+
+### Features
+
+- logs agent interactions to `logs/`
+- evaluates saved logs with an LLM judge
+- supports single-log and batch evaluation
+- generates evaluation questions from repository chunks
+- runs generated questions through the agent automatically
+- saves detailed evaluation results for later comparison
+
+### Day 5 artefacts
+
+- interaction logs: `logs/*.json`
+- question generation: `aihero/project/src/generate_eval_questions.py`
+- evaluation: `aihero/project/src/evaluate_agent_logs.py`
+- generated questions: `_data/eval_questions.json`
+- generated run results: `_data/eval_runs.json`
+- saved evaluation baseline: `_data/eval_results_ai_generated.json`
+
+### Day 5 commands
+
+- `j eval-log`
+- `j eval-log-file logs/<file>.json`
+- `j eval-logs`
+- `j eval-logs-ai`
+- `j eval-logs-ai-save`
+- `j eval-generate-questions`
+- `j eval-run-questions`
+
 ## Current status
 
 - Day 1 complete
 - Day 2 complete
 - Day 3 complete
 - Day 4 complete
+- Day 5 complete
 
 ## Next
 
-Day 5: evaluate the agent and compare search/prompt choices.
+Day 6: build a UI for the agent and prepare it for deployment.
 
