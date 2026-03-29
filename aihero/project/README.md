@@ -152,6 +152,26 @@ Evaluate the repository agent systematically.
 - `j eval-generate-questions`
 - `j eval-run-questions`
 
+## Day 6
+
+Build a local UI for the repository agent.
+
+### Features
+
+- adds a Streamlit chat interface on top of the existing agent
+- reuses the existing repository search and agent logic
+- logs UI interactions the same way as CLI interactions
+- supports local testing before deployment
+
+### Day 6 artefacts
+
+- Streamlit app: `aihero/project/src/app_streamlit.py`
+- reusable logging module: `aihero/project/src/logs.py`
+
+### Day 6 command
+
+- `j app`
+
 ## Current status
 
 - Day 1 complete
@@ -159,8 +179,9 @@ Evaluate the repository agent systematically.
 - Day 3 complete
 - Day 4 complete
 - Day 5 complete
+- Day 6 complete
 
 ## Next
 
-Day 6: build a UI for the agent and prepare it for deployment.
+Day 7: wrap up the project and prepare the final presentation/demo.
 

@@ -37,6 +37,8 @@ eval_runs_script := "aihero/project/src/run_eval_questions.py"
 eval_runs_output := "_data/eval_runs.json"
 eval_results_output := "_data/eval_results_ai_generated.json"
 
+app_script := "aihero/project/src/app_streamlit.py"
+
 ###
 ### Project info
 ###
@@ -303,4 +305,8 @@ eval-logs-ai-save:
 	  --source ai-generated \
 	  --model {{eval_model}} \
 	  --output {{eval_results_output}}
+
+# Run the local Streamlit app.
+app:
+	uv run --project . streamlit run {{app_script}}
 
